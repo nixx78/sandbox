@@ -1,4 +1,4 @@
-package lv.nixx.poc.datastruct;
+package lv.nixx.poc.datastruct.collection;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

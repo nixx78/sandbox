@@ -1,4 +1,4 @@
-package lv.nixx.poc.datastruct;
+package lv.nixx.poc.datastruct.collection;
 
 import lv.nixx.poc.datastruct.domain.Transaction;
 import org.junit.jupiter.api.Test;

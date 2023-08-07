@@ -13,29 +13,6 @@ import static org.junit.Assert.assertTrue;
 
 public class ConcurrencySnippets {
 
-
-    @Test
-    public void cyclicBarrierSample() {
-
-        final CyclicBarrier cyclicBarrier = new CyclicBarrier(2, () -> System.out.println("Barrier done!"));
-
-        IntStream.of(1000, 100, 200, 300, 500).mapToObj(t -> (Runnable) () -> {
-                            final String tn = Thread.currentThread().getName();
-                            try {
-                                cyclicBarrier.await();
-                                System.out.println("Thread [" + tn + "] will sleep [" + t + "]");
-                                Thread.sleep(t);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                            System.out.println("Thread [" + tn + "] done");
-                        }
-                ).map(Thread::new)
-                .forEach(Thread::start);
-    }
-
-
     @Test
     public void countDownLatchSample() throws InterruptedException {
 

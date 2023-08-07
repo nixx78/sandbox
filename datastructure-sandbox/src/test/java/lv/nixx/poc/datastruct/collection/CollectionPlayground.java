@@ -198,6 +198,13 @@ class CollectionPlayground {
         result.forEach(System.out::println);
     }
 
+
+    @Test
+    void test() {
+        System.out.println(String.format("System %s", 1234));
+    }
+
+
     @Test
     void findCommonElementInCollection() {
 

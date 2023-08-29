@@ -186,6 +186,31 @@ class TxnLambdaModification {
     }
 
     @Test
+    void groupingWithAmountsToSet() {
+
+        Collection<Transaction> sourceTransactions = List.of(
+                new Transaction("id1", 0.00, "ACC1", "USD", "2020-04-21"),
+                new Transaction("id2", 20.12, "ACC2", "USD", "2020-05-01"),
+                new Transaction("id3", 30.13, "ACC2", "EUR", "2020-05-02"),
+                new Transaction("id4", 40.14, "ACC3", "EUR", "2020-05-03"),
+                new Transaction("id5", 50.14, "ACC3", "EUR", "2020-06-01"),
+                new Transaction("id6", 0.00, "ACC3", "USD", "2020-06-01"),
+                new Transaction("id6", 70.14, "ACC3", "USD", "2020-06-01"),
+                new Transaction("id7", 100.00, "ACC4", "GBP", "2020-06-01"),
+                new Transaction("id8", 1.27, "ACC4", "GBP", "2020-06-01")
+        );
+
+        Map<String, Boolean> containsNonZero = sourceTransactions.stream()
+                .collect(
+                        collectingAndThen(groupingBy(Transaction::getAccount, mapping(t -> t.getAmount().compareTo(BigDecimal.ZERO) == 0, toSet())),
+                                e -> e.entrySet().stream().collect(toMap(Map.Entry::getKey, t -> t.getValue().contains(false)))
+                        )
+                );
+
+        containsNonZero.entrySet().forEach(System.out::println);
+    }
+
+    @Test
     void mapCollection() {
 
         Collection<Amount> c =

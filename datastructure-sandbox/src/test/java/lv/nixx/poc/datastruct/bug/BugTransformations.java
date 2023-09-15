@@ -3,10 +3,8 @@ package lv.nixx.poc.datastruct.bug;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -23,9 +21,9 @@ import static java.time.LocalDate.of;
 public class BugTransformations {
 
 	@Test
-	public void createCalendar() throws ParseException {
+	public void createCalendar() {
 
-		final Collection<Bug> bugs = Arrays.asList(new Bug(10, of(2017, 9, 5), of(2017, 9, 6), "1"),
+		final Collection<Bug> bugs = List.of(new Bug(10, of(2017, 9, 5), of(2017, 9, 6), "1"),
 				new Bug(20, of(2017, 9, 6), null, "1"), new Bug(30, of(2017, 9, 8), of(2017, 9, 8), "1"),
 				new Bug(40, of(2017, 10, 1), of(2017, 10, 2), "1"));
 
@@ -34,8 +32,8 @@ public class BugTransformations {
 
 		final Predicate<Bug> dateFilter = p -> {
 			LocalDate closeDate = p.getCloseDate();
-			return p.getOpenDate().compareTo(startDate) >= 0 && closeDate == null
-					|| closeDate.compareTo(endDate) <= 0;
+			return !p.getOpenDate().isBefore(startDate) && closeDate == null
+					|| !closeDate.isAfter(endDate);
 		};
 
 		final Function<Bug, Stream<BugEntry>> mapper = t -> {

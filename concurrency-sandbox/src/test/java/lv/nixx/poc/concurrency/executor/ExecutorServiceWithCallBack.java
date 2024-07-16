@@ -1,4 +1,4 @@
-package lv.nixx.poc.concurrency;
+package lv.nixx.poc.concurrency.executor;
 
 import org.junit.jupiter.api.Test;
 

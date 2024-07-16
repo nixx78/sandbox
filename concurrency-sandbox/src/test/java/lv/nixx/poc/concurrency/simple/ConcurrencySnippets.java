@@ -1,7 +1,8 @@
-package lv.nixx.poc.concurrency;
+package lv.nixx.poc.concurrency.simple;
 
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
@@ -62,13 +63,13 @@ public class ConcurrencySnippets {
 
         ExecutorService exec = Executors.newFixedThreadPool(10);
 
-        List<Callable<String>> lst = List.of(
+        Collection<Callable<String>> lst = List.of(
                 new Printer(1),
                 new Printer(2),
                 new Printer(3),
                 new Printer(4));
 
-        List<Future<String>> futures = exec.invokeAll(lst);
+        Collection<Future<String>> futures = exec.invokeAll(lst);
 
         System.out.println("=== Features: order is equals to callable list order ===");
         for (Future<String> f : futures) {

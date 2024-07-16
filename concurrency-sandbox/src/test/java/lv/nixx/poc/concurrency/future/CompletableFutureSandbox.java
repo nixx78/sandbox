@@ -1,20 +1,22 @@
-package lv.nixx.poc.concurrency;
+package lv.nixx.poc.concurrency.future;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CompletableFutureSandbox {
+
+class CompletableFutureSandbox {
 	
-	final Map<String, String> users = new ConcurrentHashMap<>();
+	final static Map<String, String> users = new ConcurrentHashMap<>();
 
-	@Before
-	public void init() {
+	@BeforeAll
+	static void init() {
 		users.put("id1", "id1:name1");
 		users.put("id2", "id2:name2");
 		users.put("id3", "id3:name3");
@@ -25,14 +27,13 @@ public class CompletableFutureSandbox {
 
 	@Test
 	public void helloFutureTest() throws Exception {
-
 		CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> "Hello").thenApply(s -> s + " World");
 
-		System.out.println(completableFuture.get());
+		assertEquals("Hello World", completableFuture.get());
 	}
 
 	@Test
-	public void createCompleteFuture() throws Exception {
+	void createCompleteFuture() throws Exception {
 
 		String userId = "id1";
 
@@ -42,10 +43,11 @@ public class CompletableFutureSandbox {
 				.exceptionally(this::processException);
 
 		assertEquals("id1:name1", cf.get());
+
 	}
 	
 	@Test
-	public void combineFuturesTest() throws Exception {
+	void combineFuturesTest() throws Exception {
 		
 		CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> "Hello")
 		    .thenCompose(s -> CompletableFuture.supplyAsync(() -> s + " World"));
@@ -53,18 +55,18 @@ public class CompletableFutureSandbox {
 		assertEquals("Hello World", completableFuture.get());
 	}
 
-	@Test(expected = ExecutionException.class)
-	public void completeFutureWithException() throws Exception {
-
+	@Test
+	void completeFutureWithException() {
 		CompletableFuture<String> thenApply = CompletableFuture.supplyAsync(() -> getUserInfo("ERROR"))
 		.thenApply(this::convert)
 		.thenApply(this::convertResult);
 
-		thenApply.get();
+		ExecutionException ex = assertThrows(ExecutionException.class, thenApply::get);
+		assertEquals("java.lang.IllegalArgumentException: GetUserInfo error", ex.getMessage());
 	}
 	
 	@Test
-	public void exceptionHandling() throws Exception {
+	void exceptionHandling() throws Exception {
 		
 		String name = null;
 		
@@ -95,7 +97,7 @@ public class CompletableFutureSandbox {
 			c.add(cf);
 		}
 
-		List<User> users = CompletableFuture.allOf(c.toArray(new CompletableFuture[c.size()]))
+		List<User> users = CompletableFuture.allOf(c.toArray(new CompletableFuture[0]))
 				.thenApply(v -> c.stream()
 				.map(CompletableFuture::join)
 				.collect(Collectors.toList())).thenApply(t -> {

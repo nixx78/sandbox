@@ -1,4 +1,4 @@
-package lv.nixx.poc.concurrency;
+package lv.nixx.poc.concurrency.executor;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
-
-//TODO https://engineering.zalando.com/posts/2019/04/how-to-set-an-ideal-thread-pool-size.html
-//TODO https://habr.com/ru/articles/260953/
+import java.util.function.Supplier;
 
 class ExecutorServiceSamples {
 
@@ -23,6 +21,7 @@ class ExecutorServiceSamples {
             .build();
 
     private final ExecutorService pool = Executors.newFixedThreadPool(3, threadFactory);
+
     private final List<Request> requestsToExecute = List.of(
             new Request("req1", "request1", 0L),
             new Request("req2", "request2", 100L),
@@ -87,7 +86,8 @@ class ExecutorServiceSamples {
     void invokeAnySample() {
         try {
             // Получаем один результат, первого выполненого потока, остальные запросы - отменяются
-            System.out.println("InvokeAny result:" + pool.invokeAny(requestsToExecute));
+            String s = pool.invokeAny(requestsToExecute);
+            System.out.println("InvokeAny result:" + s);
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error during 'InvokeAny' " + e);
         }
@@ -103,12 +103,21 @@ class ExecutorServiceSamples {
     }
 
     @Test
-    public void completableFutureTest() {
-        //TODO Implement this sample
-        CompletableFuture<Request> requestCompletableFuture = CompletableFuture.supplyAsync(() -> requestsToExecute.get(0), pool);
+    public void completableFutureTest() throws ExecutionException, InterruptedException {
 
+        Supplier<String> requestSupplier = () -> {
+            try {
+                return requestsToExecute.get(0).call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        CompletableFuture<String> requestCompletableFuture = CompletableFuture.supplyAsync(requestSupplier, pool);
+        String response = requestCompletableFuture.get();
+
+        System.out.println("Response from Thread:" + response);
     }
-
 
     @RequiredArgsConstructor
     static class Request implements Callable<String> {

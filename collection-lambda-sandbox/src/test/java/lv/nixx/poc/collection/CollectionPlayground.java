@@ -125,12 +125,6 @@ class CollectionPlayground {
         assertThrows(NullPointerException.class, () -> map.put(null, "nullValue"));
     }
 
-    @Test
-    void sumOfElement() {
-        Collection<Integer> c = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
-        final Optional<Integer> sum = c.stream().reduce(Integer::sum);
-        assertEquals(Integer.valueOf(28), sum.get());
-    }
 
     @Test
     void collectionDisjoint() {
@@ -294,15 +288,7 @@ class CollectionPlayground {
     }
 
 
-    @Test
-    void theLongestWord_ReduceMethod() {
-        List<String> str = Arrays.asList("123", "1", "12", "12345");
 
-        final Optional<String> collect = str.stream().reduce((t, u) -> t.length() > u.length() ? t : u);
-
-        assertTrue(collect.isPresent());
-        assertEquals("12345", collect.get());
-    }
 
     @Test
     void initArray() {
@@ -315,13 +301,7 @@ class CollectionPlayground {
     }
 
 
-    @Test
-    void findMissing() {
-        int[] a = new int[]{1, 2, 5, 3, 2, 1, 3};
 
-        final int r = Arrays.stream(a).reduce(0, (x, y) -> x ^ y);
-        assertEquals(5, r);
-    }
 
 
     @Test

@@ -3,7 +3,7 @@ package lv.nixx.poc.collection.reduce;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -15,10 +15,12 @@ import java.util.stream.Collectors;
 import static java.util.function.BinaryOperator.maxBy;
 import static java.util.stream.Collectors.*;
 
-public class ReducerSample {
+class ReducerSample {
+
+
 
     @Test
-    public void reducerSample() throws Exception {
+    void reducerSample() throws Exception {
 
         Collection<Posting> postings = List.of(
                 new Posting("post1", toTimestamp("04/26/2019 12:00:01"), toDate("04/26/2019"), BigDecimal.valueOf(10.01)),
@@ -59,7 +61,7 @@ public class ReducerSample {
     }
 
     @Test
-    public void maxBySample() throws ParseException {
+    void maxBySample() throws ParseException {
 
         Collection<Posting> postings = List.of(
                 new Posting("post1", toTimestamp("07/26/2022 12:00:01"), toDate("07/26/2022"), BigDecimal.valueOf(10.01)),

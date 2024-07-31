@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 class ExecutorServiceSamples {
 
-    // Лучше установить для пула потоков свое имя, это помогает при DEBUG / Support
+    // Лучше установить для пула потоков свое имя, это помогает при DEBUG / Support, для простоты используем класс из Guava
     final ThreadFactory threadFactory = new ThreadFactoryBuilder()
             .setNameFormat("MyRequestPool#%d")
             .setDaemon(true)

@@ -1,6 +1,6 @@
 package lv.nixx.poc.concurrency.simple;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,13 +9,13 @@ import java.util.stream.IntStream;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ConcurrencySnippets {
+class ConcurrencySnippets {
 
     @Test
-    public void countDownLatchSample() throws InterruptedException {
+    void countDownLatchSample() throws InterruptedException {
 
         CountDownLatch cd = new CountDownLatch(3);
 
@@ -41,7 +41,7 @@ public class ConcurrencySnippets {
     }
 
     @Test
-    public void executorSampleWithAwaitTermination() throws InterruptedException {
+    void executorSampleWithAwaitTermination() throws InterruptedException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
             String threadName = Thread.currentThread().getName();
@@ -59,7 +59,7 @@ public class ConcurrencySnippets {
     }
 
     @Test
-    public void callableSample() throws Exception {
+    void callableSample() throws Exception {
 
         ExecutorService exec = Executors.newFixedThreadPool(10);
 
@@ -81,7 +81,7 @@ public class ConcurrencySnippets {
     }
 
     @Test
-    public void scheduledExecutorTest() throws InterruptedException {
+    void scheduledExecutorTest() throws InterruptedException {
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
@@ -92,7 +92,7 @@ public class ConcurrencySnippets {
     }
 
     @Test
-    public void semaphoreUsageSample() {
+    void semaphoreUsageSample() {
         Semaphore s = new Semaphore(3);
 
         assertTrue(s.tryAcquire());

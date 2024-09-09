@@ -7,6 +7,10 @@ import java.util.Collection;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
+/*
+Пример запуска parallelStream в poole потоков, который контролируется пользователем
+ */
+
 class ParallelStreamSandbox {
 
 

@@ -87,21 +87,6 @@ class CollectionPlayground {
         System.out.println("HashSet time: " + (System.currentTimeMillis() - st));
     }
 
-    @Test
-    void mapTest() {
-
-        ConcurrentHashMap<String, ReentrantReadWriteLock> m = new ConcurrentHashMap<>();
-        ReentrantReadWriteLock lock = m.computeIfAbsent("cusip.settleDate", t -> new ReentrantReadWriteLock());
-        try {
-            lock.readLock().lock();
-            System.out.println(lock.getReadHoldCount());
-        } finally {
-            lock.readLock().unlock();
-            System.out.println(lock.getReadHoldCount());
-        }
-    }
-
-
 
     @Test
     void linkedHashMap() {

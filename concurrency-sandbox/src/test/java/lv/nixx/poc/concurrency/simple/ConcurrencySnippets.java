@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.stream.IntStream;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -13,32 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ConcurrencySnippets {
-
-    @Test
-    void countDownLatchSample() throws InterruptedException {
-
-        CountDownLatch cd = new CountDownLatch(3);
-
-        IntStream.of(1000, 100, 200).mapToObj(t -> (Runnable) () -> {
-                            final String tn = Thread.currentThread().getName();
-                            try {
-                                System.out.println("Thread [" + tn + "] will sleep [" + t + "]");
-                                Thread.sleep(t);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            cd.countDown();
-                            System.out.println("Thread [" + tn + "] done");
-                        }
-                ).map(Thread::new)
-                .forEach(Thread::start);
-
-        System.out.println("Waiting for all treads..");
-
-        cd.await(2, TimeUnit.SECONDS);
-        System.out.println("All threads are ready");
-
-    }
 
     @Test
     void executorSampleWithAwaitTermination() throws InterruptedException {

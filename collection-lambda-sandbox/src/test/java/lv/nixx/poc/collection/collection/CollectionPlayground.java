@@ -1,4 +1,4 @@
-package lv.nixx.poc.collection;
+package lv.nixx.poc.collection.collection;
 
 import lv.nixx.poc.collection.domain.Transaction;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.disjoint;

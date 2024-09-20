@@ -1,4 +1,4 @@
-package lv.nixx.poc.collection;
+package lv.nixx.poc.collection.collection;
 
 import org.junit.jupiter.api.Test;
 

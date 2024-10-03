@@ -14,6 +14,15 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/*
+Top 5 functions:
+    * Function<T, R>: преобразование одного типа данных в другой.
+    * Consumer<T>: выполнение действия над аргументом.
+    * Supplier<T>: генерация или предоставление значения.
+    * Predicate<T>: проверка условия, возвращающая boolean.
+    * UnaryOperator<T>: операция над значением с результатом того же типа.
+ */
+
 class LambdaSandbox {
 
     @Test

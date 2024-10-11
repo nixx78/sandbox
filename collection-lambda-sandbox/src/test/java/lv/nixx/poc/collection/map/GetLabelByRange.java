@@ -8,10 +8,10 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import static lv.nixx.poc.collection.map.BelongsToRange.RangeLabel.*;
+import static lv.nixx.poc.collection.map.GetLabelByRange.RangeLabel.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class BelongsToRange {
+class GetLabelByRange {
 
     @Test
     public void belongsToRangeWithoutGaps() {

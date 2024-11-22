@@ -2,22 +2,27 @@ package lv.nixx.poc.collection.bidAsk;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 import static lv.nixx.poc.collection.bidAsk.BidAskHolderTest.BidAsk.ASK;
 import static lv.nixx.poc.collection.bidAsk.BidAskHolderTest.BidAsk.BID;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BidAskHolderTest {
+
+class BidAskHolderTest {
 
     @Test
-    public void bidAskSample() {
+    void bidAskSample() {
 
         List<Position> positions = List.of(
                 new Position("isin1", BID, 100.01),
@@ -60,6 +65,33 @@ public class BidAskHolderTest {
         System.out.println("==================");
         m3.forEach((key, value) -> System.out.println(key + "\n\t\t" + value));
 
+
+    }
+
+    @Test
+    void combineByIsin() {
+
+        Map<String, IsinWithValues> grouped = Stream.of(
+                new Position("isin1", BID, 100.01),
+                new Position("isin1", ASK, 100.02),
+                new Position("isin2", BID, 200.01),
+                new Position("isin2", ASK, 200.02),
+                new Position("isin2", ASK, 200.03),
+                new Position("isin3", BID, 300.01),
+                new Position("isin3", ASK, 300.02)
+        ).collect(
+                groupingBy(Position::getIsin, collectingAndThen(toList(), list -> new IsinWithValues(list.get(0).getIsin(),
+                        list.stream().map(Position::getValue).toList()))
+                )
+        );
+
+        assertThat(grouped).usingRecursiveComparison()
+                .isEqualTo(Map.of(
+                                "isin1", new IsinWithValues("isin1", List.of(100.01, 100.02)),
+                                "isin2", new IsinWithValues("isin2", List.of(200.01, 200.02, 200.03)),
+                                "isin3", new IsinWithValues("isin3", List.of(300.01, 300.02))
+                        )
+                );
 
     }
 
@@ -143,6 +175,14 @@ public class BidAskHolderTest {
         Double bid;
         Double ask;
     }
+
+    @RequiredArgsConstructor
+    @Getter
+    static class IsinWithValues {
+        private final String isin;
+        private final Collection<Double> values;
+    }
+
 
     enum BidAsk {
         BID, ASK
